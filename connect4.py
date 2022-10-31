@@ -1,5 +1,7 @@
 import random
 import math
+from time import sleep
+from os import system, name
 
 choices_message = """
 Choose your options:
@@ -13,12 +15,23 @@ def intInput(a, b, msg):
         try:
             ch = int(input(msg))
             while ch < a or ch > b:
-                print("Please enter a valid choice")
+                print("\nPlease enter a valid choice")
+                sleep(2)
+                clear()
                 ch = int(input(msg))
             # valid choice 
             return ch
         except:
-            print("Please enter a valid choice")
+            print("\nPlease enter a valid choice")
+            sleep(2)
+            clear()
+
+def clear():
+    if name == "nt":
+        _ = system('cls')
+    else:
+        _ = system('clear')
+
 
 def check_move(board, turn, col, pop):
     # implement your function here
