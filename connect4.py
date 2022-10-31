@@ -10,6 +10,10 @@ Choose your options:
 3) Player vs Player
 """
 
+rows_message = """
+Enter no. of rows (minimum 4):
+"""
+
 def intInput(a, b, msg):
     while True:
         try:
@@ -51,12 +55,18 @@ def computer_move(board, turn, level):
     
 def display_board(board):
     # implement your function here
+    print("\n Current Board:")
+    for i in range (0,len(board),7):
+            print(board[i:i+7])
     pass
 
 def menu():
     # implement your function here
     print("Welcome!")
     choice = intInput(1,3, choices_message)
+    rows = intInput(4,float('inf'),rows_message)
+    board = [0] * 7 * rows
+    display_board(board)
     pass
 
 if __name__ == "__main__":
