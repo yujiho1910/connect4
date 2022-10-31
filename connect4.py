@@ -1,6 +1,25 @@
 import random
 import math
 
+choices_message = """
+Choose your options:
+1) Player vs Computer (Easy)
+2) Player vs Computer (Difficult)
+3) Player vs Player
+"""
+
+def intInput(a, b, msg):
+    while True:
+        try:
+            ch = int(input(msg))
+            while ch < a or ch > b:
+                print("Please enter a valid choice")
+                ch = int(input(msg))
+            # valid choice 
+            return ch
+        except:
+            print("Please enter a valid choice")
+
 def check_move(board, turn, col, pop):
     # implement your function here
     return True
@@ -23,27 +42,8 @@ def display_board(board):
 
 def menu():
     # implement your function here
-    choice = input(
-"""
-Welcome!
-Choose your options:
-1) Player vs Computer (Easy)
-2) Player vs Computer (Difficult)
-3) Player vs Player
-"""
-            )
-    try:
-        ch = int(choice)
-        while ch < 1 or ch > 3:
-            print("Please enter a valid choice")
-            ch = int(input("Your choices\n" +
-                        "1) Player vs Computer (Easy)\n" +
-                        "2) Player vs Computer (Medium)\n" +
-                        "3) Player vs Player"))
-
-        # valid choice 
-    except:
-        print("Please enter a valid choice")
+    print("Welcome!")
+    choice = intInput(1,3, choices_message)
     pass
 
 if __name__ == "__main__":
