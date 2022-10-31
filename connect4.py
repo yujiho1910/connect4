@@ -32,7 +32,18 @@ Choose your options:
 3) Player vs Player
 """
             )
-    
+    try:
+        ch = int(choice)
+        while ch < 1 or ch > 3:
+            print("Please enter a valid choice")
+            ch = int(input("Your choices\n" +
+                        "1) Player vs Computer (Easy)\n" +
+                        "2) Player vs Computer (Medium)\n" +
+                        "3) Player vs Player"))
+
+        # valid choice 
+    except:
+        print("Please enter a valid choice")
     pass
 
 if __name__ == "__main__":
