@@ -23,6 +23,16 @@ def display_board(board):
 
 def menu():
     # implement your function here
+    choice = input(
+"""
+Welcome!
+Choose your options:
+1) Player vs Computer (Easy)
+2) Player vs Computer (Difficult)
+3) Player vs Player
+"""
+            )
+    
     pass
 
 if __name__ == "__main__":
