@@ -8,6 +8,7 @@ Choose your options:
 1) Player vs Computer (Easy)
 2) Player vs Computer (Difficult)
 3) Player vs Player
+
 """
 
 def intInput(a, b, msg):
@@ -16,14 +17,14 @@ def intInput(a, b, msg):
             ch = int(input(msg))
             while ch < a or ch > b:
                 print("\nPlease enter a valid choice")
-                sleep(2)
+                sleep(1)
                 clear()
                 ch = int(input(msg))
             # valid choice 
             return ch
         except:
             print("\nPlease enter a valid choice")
-            sleep(2)
+            sleep(1)
             clear()
 
 def clear():
@@ -32,34 +33,63 @@ def clear():
     else:
         _ = system('clear')
 
+def board2D(board):
+    res = []
+    n = len(board)
+    r = n // 7
+    for i in range(r-1, -1, -1):
+        res.append([])
+        for j in range(7):
+            res[r-1-i].append(board[7*i + j])
+    
+    return res
+
 
 def check_move(board, turn, col, pop):
     # implement your function here
-    print("hello")
-    return True
+    board2 = board2D(board)
+    display_board(board)
+    if pop:
+        if board2[-1][col] == turn:
+            return True 
+        else:
+            return False 
+    else:
+        if board2[0][col] == 0:
+            return True
+        else:
+            return False
+
 
 def apply_move(board, turn, col, pop):
     # implement your function here
+    board2 = board2D(board)
+
+
     return board.copy()
 
 def check_victory(board, who_played):
     # implement your function here
+    board2 = board2D(board)
     return -1
 
 def computer_move(board, turn, level):
     # implement your function here
+    board2 = board2D(board)
     return (0,False)
     
 def display_board(board):
     # implement your function here
-    print("\n Current Board:")
-    for i in range (0,len(board),7):
-            print(board[i:i+7])
+    board2 = board2D(board)
+    for i in board2:
+        print(i)
     pass
 
 def menu():
     # implement your function here
+    clear()
     print("Welcome!")
+    sleep(1)
     choice = intInput(1,3, choices_message)
     pass
 
