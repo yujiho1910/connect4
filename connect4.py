@@ -33,7 +33,7 @@ def clear():
     else:
         _ = system('clear')
 
-def board2D(board):
+def board1Dto2D(board):
     res = []
     n = len(board)
     r = n // 7
@@ -44,10 +44,17 @@ def board2D(board):
     
     return res
 
+def board2Dto1D(board):
+    res = []
+    for i in range(len(board)-1, -1, -1):
+        for j in range(len(board[0])):
+            res.append(board[i][j])
+
+    return res
 
 def check_move(board, turn, col, pop):
     # implement your function here
-    board2 = board2D(board)
+    board2 = board1Dto2D(board)
     display_board(board)
     if pop:
         if board2[-1][col] == turn:
@@ -63,13 +70,23 @@ def check_move(board, turn, col, pop):
 
 def apply_move(board, turn, col, pop):
     # implement your function here
-    board2 = board2D(board)
-
-
+    board2 = board1Dto2D(board)
+    if check_move(board, turn, col, pop):
+        if pop:
+            row = len(board2) - 1
+            while row >= 0 and board2[row][col]:
+                board2[row][col] = board2[row-1][col]
+                row -= 1
+        else:
+            row = 0
+            while row < len(board2) and board2[row][col] == 0:
+                row += 1
+            board2[row-1][col] = turn 
+    board = board2Dto1D(board2)
     return board.copy()
 
 def check_victory(board, who_played):
-    board2 = board2D(board)
+    board2 = board1Dto2D(board)
     row = len(board2)
     col = len(board2[0])
 
@@ -112,15 +129,14 @@ def helper(board2, who_played, row, col):
     
     return 0
 
-        
-
 def computer_move(board, turn, level):
-
+    # implement your function here
+    board2 = board1Dto2D(board)
     return (0,False)
     
 def display_board(board):
     # implement your function here
-    board2 = board2D(board)
+    board2 = board1Dto2D(board)
     for i in board2:
         print(i)
     pass
