@@ -86,9 +86,48 @@ def apply_move(board, turn, col, pop):
     return board.copy()
 
 def check_victory(board, who_played):
-    # implement your function here
     board2 = board1Dto2D(board)
-    return -1
+    row = len(board2)
+    col = len(board2[0])
+
+    if helper(board2,1,row,col) and who_played==2:
+        return 1
+    
+    elif helper(board2,2,row,col) and who_played==1:
+        return 2
+    
+    elif helper(board2,who_played,row,col):
+        return who_played
+    
+    return 0
+
+def helper(board2, who_played, row, col):
+    def checkRow(i,j):
+        if 0<=i<row and 0<=j<col and board2[i][j]==who_played:
+            return 1+checkRow(i,j+1)
+        return 0
+
+    def checkCol(i,j):
+        if 0<=i<row and 0<=j<col and board2[i][j]==who_played:
+            return 1+checkCol(i+1,j)
+        return 0
+    
+    def checkDownslope(i,j):
+        if 0<=i<row and 0<=j<col and board2[i][j]==who_played:
+            return 1+checkDownslope(i+1,j+1)
+        return 0
+    
+    def checkUpslope(i,j):
+        if 0<=i<row and 0<=j<col and board2[i][j]==who_played:
+            return 1+checkUpslope(i+1,j-1)
+        return 0
+    
+    for i in range(row):
+        for j in range(col):
+            if checkRow(i,j)>=4 or checkCol(i,j)>=4 or checkDownslope(i,j)>=4 or checkUpslope(i,j)>=4:
+                return 1
+    
+    return 0
 
 def computer_move(board, turn, level):
     # implement your function here
