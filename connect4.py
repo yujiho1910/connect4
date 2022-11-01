@@ -110,8 +110,7 @@ def helper(board2, who_played, row, col):
             if checkRow(i,j)>=4 or checkCol(i,j)>=4 or checkDownslope(i,j)>=4 or checkUpslope(i,j)>=4:
                 return 1
     
-    else:
-        return 0
+    return 0
 
         
 
