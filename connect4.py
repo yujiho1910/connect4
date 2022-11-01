@@ -35,7 +35,7 @@ def clear():
 
 def check_move(board, turn, col, pop):
     # implement your function here
-    print("hello")
+    print("hi")
     return True
 
 def apply_move(board, turn, col, pop):
