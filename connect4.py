@@ -132,6 +132,20 @@ def helper(board2, who_played, row, col):
 def computer_move(board, turn, level):
     # implement your function here
     board2 = board1Dto2D(board)
+    row = len(board2)
+    col = len(board2[0])
+
+    if level == 1:
+        while(True):
+            j = random.randint(0,col)
+            p = random.randint(0,2)
+            if check_move(board, turn, j, p):
+                apply_move(board, turn, j, p)
+                return (j,p)
+    
+    # if level == 2:
+    # write level 2 but im going to sleep
+
     return (0,False)
     
 def display_board(board):
