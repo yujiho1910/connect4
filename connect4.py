@@ -10,6 +10,15 @@ Choose your options:
 3) Player vs Player
 
 """
+rows_message = """
+Choose how many rows:
+"""
+col_message = """
+Enter column to place (1-7)
+"""
+pop_message = """
+Do you want to remove the bottom disc? (1 if yes, 0 if no)
+"""
 
 def intInput(a, b, msg):
     while True:
@@ -55,7 +64,6 @@ def board2Dto1D(board):
 def check_move(board, turn, col, pop):
     # implement your function here
     board2 = board1Dto2D(board)
-    display_board(board)
     if pop:
         if board2[-1][col] == turn:
             return True 
@@ -131,8 +139,43 @@ def helper(board2, who_played, row, col):
 
 def computer_move(board, turn, level):
     # implement your function here
-    board2 = board1Dto2D(board)
-    return (0,False)
+    cols = 7
+    if level == 1:
+        #random inputs
+        while True:
+            y = random.randint(0, cols-1)
+            pop = random.randint(0, 1)
+            if pop == 0:
+                if check_move(board, turn, y, True):
+                    return (y, True)
+            else:
+                if check_move(board, turn, y, False):
+                    return (y, False)
+
+    elif level == 2:
+        for i in range(cols):
+            board_tmp = apply_move(board, turn, i, False)
+            if check_victory(board_tmp, turn):
+                return (i, False)
+
+        for i in range(cols):
+            board_tmp = apply_move(board, 1, i, False)
+            if check_victory(board_tmp, 1):
+                print((i, False))
+                return (i, False)
+
+        while True:
+            y = random.randint(0, cols-1)
+            pop = random.randint(0, 1)
+            if pop == 0:
+                if check_move(board, turn, y, True):
+                    board_tmp = apply_move(board, turn, y, True)
+                    if not check_victory(board_tmp, 1):
+                        return (y, True)
+            else:
+                if check_move(board, turn, y, False):
+                    return (y, False)
+
     
 def display_board(board):
     # implement your function here
@@ -147,6 +190,66 @@ def menu():
     print("Welcome!")
     sleep(1)
     choice = intInput(1,3, choices_message)
+    rows = intInput(1,7, rows_message)
+    size = rows * 7
+    board = [0] * size 
+    turn = 1
+    while not check_victory(board, turn+1):
+        turn = (turn + 1) % 2
+        clear()
+        display_board(board)
+        if turn == 1 and choice != 3:
+            if choice == 1:
+                col, pop = computer_move(board, turn+1, 1)
+                board = apply_move(board, turn+1, col, pop)
+                clear()
+                display_board(board)
+                if pop:
+                    print("Computer popped at column", col+1)
+                else:
+                    print("Computer placed disc at column", col+1)
+                sleep(2)
+            elif choice == 2:
+                col, pop = computer_move(board, turn+1, 2)
+                board = apply_move(board, turn+1, col, pop)
+                clear()
+                display_board(board)
+                if pop:
+                    print("Computer popped at column", col+1)
+                else:
+                    print("Computer placed disc at column", col+1)
+                sleep(2)
+        else:
+            if choice == 3:
+                print("Player " + str(turn+1) + "'s turn")
+            else:
+                print("It's your turn")
+            while True:
+                col = intInput(1,7, col_message)
+                pop = 0
+                if board[col-1] == turn+1:
+                    pop = intInput(0,1, pop_message)
+                if pop == 0:
+                    if check_move(board, turn+1, col-1, False):
+                        board = apply_move(board, turn+1, col-1, False)
+                        break
+                else:
+                    if check_move(board, turn+1, col-1, True):
+                        board = apply_move(board, turn+1, col-1, True)
+                        break
+
+
+
+    clear()
+    display_board(board)
+    if choice == 1 or choice == 2:
+        if turn == 0:
+            print("Player is the winner!")
+        else:
+            print("Computer is the winner!")
+    else:
+        print("Player " + str(check_victory(board, turn+1)) + " is the winner!")
+    print("")
     pass
 
 if __name__ == "__main__":
