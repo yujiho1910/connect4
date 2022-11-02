@@ -2,23 +2,7 @@ import random
 import math
 from time import sleep
 from os import system, name
-
-choices_message = """
-Choose your options:
-1) Player vs Computer (Easy)
-2) Player vs Computer (Difficult)
-3) Player vs Player
-
-"""
-rows_message = """
-Choose how many rows:
-"""
-col_message = """
-Enter column to place (1-7)
-"""
-pop_message = """
-Do you want to remove the bottom disc? (1 if yes, 0 if no)
-"""
+import textwrap
 
 def intInput(a, b, msg):
     while True:
@@ -189,14 +173,39 @@ def menu():
     clear()
     print("Welcome!")
     sleep(1)
-    choice = intInput(1,3, choices_message)
-    rows = intInput(1,7, rows_message)
+    
+    choices_message = """
+    Choose your options:
+    1) Player vs Computer (Easy)
+    2) Player vs Computer (Difficult)
+    3) Player vs Player
+
+    """
+    rows_message = """
+    Choose how many rows:
+    """
+    col_message = """
+    Enter column to place (1-7)
+    """
+    pop_message = """
+    Do you want to remove the bottom disc? (1 if yes, 0 if no)
+    """
+    choice = intInput(1,3, textwrap.dedent(choices_message))
+    rows = intInput(1,7, textwrap.dedent(rows_message))
     size = rows * 7
     board = [0] * size 
     turn = 1
+    count = 0 
+
     while not check_victory(board, turn+1):
         turn = (turn + 1) % 2
         clear()
+
+        print("size: ", count)
+        if count==size:
+            print("It's a tie!")
+            quit()
+
         display_board(board)
         if turn == 1 and choice != 3:
             if choice == 1:
@@ -206,8 +215,10 @@ def menu():
                 display_board(board)
                 if pop:
                     print("Computer popped at column", col+1)
+                    count-=1
                 else:
                     print("Computer placed disc at column", col+1)
+                    count+=1
                 sleep(2)
             elif choice == 2:
                 col, pop = computer_move(board, turn+1, 2)
@@ -216,29 +227,34 @@ def menu():
                 display_board(board)
                 if pop:
                     print("Computer popped at column", col+1)
+                    count-=1
                 else:
                     print("Computer placed disc at column", col+1)
+                    count+=1
                 sleep(2)
         else:
             if choice == 3:
                 print("Player " + str(turn+1) + "'s turn")
             else:
                 print("It's your turn")
+            
             while True:
-                col = intInput(1,7, col_message)
+                col = intInput(1,7, textwrap.dedent(col_message))
                 pop = 0
                 if board[col-1] == turn+1:
-                    pop = intInput(0,1, pop_message)
+                    pop = intInput(0,1, textwrap.dedent(pop_message))
                 if pop == 0:
                     if check_move(board, turn+1, col-1, False):
+                        count+=1
                         board = apply_move(board, turn+1, col-1, False)
                         break
                 else:
                     if check_move(board, turn+1, col-1, True):
                         board = apply_move(board, turn+1, col-1, True)
+                        count-=1
                         break
-
-
+        
+    
 
     clear()
     display_board(board)
