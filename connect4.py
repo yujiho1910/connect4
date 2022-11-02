@@ -259,10 +259,10 @@ def menu():
     clear()
     display_board(board)
     if choice == 1 or choice == 2:
-        if turn == 0:
+        if check_victory(board, turn+1) == 1:
             print("Player is the winner!")
         else:
-            print("Computer is the winner!")
+            print("Computer is the winner")
     else:
         print("Player " + str(check_victory(board, turn+1)) + " is the winner!")
     print("")
