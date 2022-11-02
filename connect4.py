@@ -63,10 +63,13 @@ def apply_move(board, turn, col, pop):
     board2 = board1Dto2D(board)
     if check_move(board, turn, col, pop):
         if pop:
-            row = len(board2) - 1
-            while row >= 0 and board2[row][col]:
-                board2[row][col] = board2[row-1][col]
-                row -= 1
+            if len(board2) == 1:
+                board2[0][col] = 0
+            else:
+                row = len(board2) - 1
+                while row >= 0 and board2[row][col]:
+                    board2[row][col] = board2[row-1][col]
+                    row -= 1
         else:
             row = 0
             while row < len(board2) and board2[row][col] == 0:
@@ -163,7 +166,14 @@ def display_board(board):
     # implement your function here
     board2 = board1Dto2D(board)
     for i in board2:
-        print(i)
+        for j in i:
+            if j == 0:
+                print("[ ]", end="")
+            elif j == 1:
+                print("[O]", end="")
+            else:
+                print("[X]", end="")
+        print()
     pass
 
 def menu():
@@ -188,66 +198,77 @@ def menu():
     pop_message = """
     Do you want to remove the bottom disc? (1 if yes, 0 if no)
     """
-    choice = intInput(1,3, textwrap.dedent(choices_message))
-    rows = intInput(1,7, textwrap.dedent(rows_message))
-    size = rows * 7
-    board = [0] * size 
-    turn = 1
+    while True:
+        choice = intInput(1,3, textwrap.dedent(choices_message))
+        rows = intInput(1,7, textwrap.dedent(rows_message))
+        size = rows * 7
+        board = [0] * size 
+        turn = 1
 
-    while not check_victory(board, turn+1):
-        turn = (turn + 1) % 2
+        while not check_victory(board, turn+1):
+            turn = (turn + 1) % 2
+            clear()
+            display_board(board)
+            if turn == 1 and choice != 3:
+                if choice == 1:
+                    col, pop = computer_move(board, turn+1, 1)
+                    board = apply_move(board, turn+1, col, pop)
+                    clear()
+                    display_board(board)
+                    if pop:
+                        print("Computer popped at column", col+1)
+                    else:
+                        print("Computer placed disc at column", col+1)
+                    input("\nPress enter to continue")
+                elif choice == 2:
+                    col, pop = computer_move(board, turn+1, 2)
+                    board = apply_move(board, turn+1, col, pop)
+                    clear()
+                    display_board(board)
+                    if pop:
+                        print("Computer popped at column", col+1)
+                    else:
+                        print("Computer placed disc at column", col+1)
+                    input("\nPress enter to continue")
+            else:
+                icon = "(O)"
+                if choice == 3:
+                    if turn == 1:
+                        icon = "(X)"
+                    print("Player " + str(turn+1) + "'s turn " + icon)
+                else:
+                    print("It's your turn " + icon)
+                
+                while True:
+                    col = intInput(1,7, textwrap.dedent(col_message))
+                    pop = 0
+                    if board[col-1] == turn+1:
+                        pop = intInput(0,1, textwrap.dedent(pop_message))
+                    if pop == 0:
+                        if check_move(board, turn+1, col-1, False):
+                            board = apply_move(board, turn+1, col-1, False)
+                            break
+                    else:
+                        if check_move(board, turn+1, col-1, True):
+                            board = apply_move(board, turn+1, col-1, True)
+                            break
         clear()
         display_board(board)
-        if turn == 1 and choice != 3:
-            if choice == 1:
-                col, pop = computer_move(board, turn+1, 1)
-                board = apply_move(board, turn+1, col, pop)
-                clear()
-                display_board(board)
-                if pop:
-                    print("Computer popped at column", col+1)
-                else:
-                    print("Computer placed disc at column", col+1)
-                input("\nPress enter to continue")
-            elif choice == 2:
-                col, pop = computer_move(board, turn+1, 2)
-                board = apply_move(board, turn+1, col, pop)
-                clear()
-                display_board(board)
-                if pop:
-                    print("Computer popped at column", col+1)
-                else:
-                    print("Computer placed disc at column", col+1)
-                input("\nPress enter to continue")
-        else:
-            if choice == 3:
-                print("Player " + str(turn+1) + "'s turn")
+        if choice != 3:
+            if check_victory(board, turn+1) == 1:
+                print("Player is the winner!")
             else:
-                print("It's your turn")
-            
-            while True:
-                col = intInput(1,7, textwrap.dedent(col_message))
-                pop = 0
-                if board[col-1] == turn+1:
-                    pop = intInput(0,1, textwrap.dedent(pop_message))
-                if pop == 0:
-                    if check_move(board, turn+1, col-1, False):
-                        board = apply_move(board, turn+1, col-1, False)
-                        break
-                else:
-                    if check_move(board, turn+1, col-1, True):
-                        board = apply_move(board, turn+1, col-1, True)
-                        break
-    clear()
-    display_board(board)
-    if choice != 3:
-        if check_victory(board, turn+1) == 1:
-            print("Player is the winner!")
+                print("Computer is the winner")
         else:
-            print("Computer is the winner")
-    else:
-        print("Player " + str(check_victory(board, turn+1)) + " is the winner!")
-    print("")
+            print("Player " + str(check_victory(board, turn+1)) + " is the winner!")
+        print("")
+
+        sleep(5)
+        clear()
+        if input("Play again? (press 1 if no)\n") == '1':
+            clear()
+            print("byebye! :)")
+            exit()
     pass
 
 if __name__ == "__main__":
