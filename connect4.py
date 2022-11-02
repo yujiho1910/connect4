@@ -265,7 +265,7 @@ def menu():
 
         sleep(5)
         clear()
-        if input("Play again? (press 1 if no)\n") == '1':
+        if lower(input("Play again?\nto quit: key in 'no'\nto play again: press any key and Enter\n")) == 'no':
             clear()
             print("byebye! :)")
             exit()
