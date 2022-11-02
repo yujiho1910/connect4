@@ -243,6 +243,7 @@ def menu():
                     col = intInput(1,7, textwrap.dedent(col_message))
                     pop = 0
                     if board[col-1] == turn+1:
+                        display_board(board)
                         pop = intInput(0,1, textwrap.dedent(pop_message))
                     if pop == 0:
                         if check_move(board, turn+1, col-1, False):
