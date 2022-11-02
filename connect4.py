@@ -183,7 +183,7 @@ def menu():
     Choose how many rows (1-7):
     """
     col_message = """
-    Enter column to place (1-7)
+    Enter column to place (1-7):
     """
     pop_message = """
     Do you want to remove the bottom disc? (1 if yes, 0 if no)
@@ -208,7 +208,7 @@ def menu():
                     print("Computer popped at column", col+1)
                 else:
                     print("Computer placed disc at column", col+1)
-                sleep(2)
+                input("\nPress enter to continue")
             elif choice == 2:
                 col, pop = computer_move(board, turn+1, 2)
                 board = apply_move(board, turn+1, col, pop)
@@ -218,7 +218,7 @@ def menu():
                     print("Computer popped at column", col+1)
                 else:
                     print("Computer placed disc at column", col+1)
-                sleep(2)
+                input("\nPress enter to continue")
         else:
             if choice == 3:
                 print("Player " + str(turn+1) + "'s turn")
@@ -238,12 +238,9 @@ def menu():
                     if check_move(board, turn+1, col-1, True):
                         board = apply_move(board, turn+1, col-1, True)
                         break
-        
-    
-
     clear()
     display_board(board)
-    if choice == 1 or choice == 2:
+    if choice != 3:
         if check_victory(board, turn+1) == 1:
             print("Player is the winner!")
         else:
