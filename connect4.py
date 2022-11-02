@@ -1,5 +1,4 @@
 import random
-import math
 from time import sleep
 from os import system, name
 import textwrap
@@ -11,14 +10,13 @@ def intInput(a, b, msg):
             while ch < a or ch > b:
                 print("\nPlease enter a valid choice")
                 sleep(1)
-                clear()
                 ch = int(input(msg))
             # valid choice 
+            clear()
             return ch
         except:
             print("\nPlease enter a valid choice")
             sleep(1)
-            clear()
 
 def clear():
     if name == "nt":
@@ -182,7 +180,7 @@ def menu():
 
     """
     rows_message = """
-    Choose how many rows:
+    Choose how many rows (1-7):
     """
     col_message = """
     Enter column to place (1-7)
@@ -195,17 +193,10 @@ def menu():
     size = rows * 7
     board = [0] * size 
     turn = 1
-    count = 0 
 
     while not check_victory(board, turn+1):
         turn = (turn + 1) % 2
         clear()
-
-        print("size: ", count)
-        if count==size:
-            print("It's a tie!")
-            quit()
-
         display_board(board)
         if turn == 1 and choice != 3:
             if choice == 1:
@@ -215,10 +206,8 @@ def menu():
                 display_board(board)
                 if pop:
                     print("Computer popped at column", col+1)
-                    count-=1
                 else:
                     print("Computer placed disc at column", col+1)
-                    count+=1
                 sleep(2)
             elif choice == 2:
                 col, pop = computer_move(board, turn+1, 2)
@@ -227,10 +216,8 @@ def menu():
                 display_board(board)
                 if pop:
                     print("Computer popped at column", col+1)
-                    count-=1
                 else:
                     print("Computer placed disc at column", col+1)
-                    count+=1
                 sleep(2)
         else:
             if choice == 3:
@@ -245,13 +232,11 @@ def menu():
                     pop = intInput(0,1, textwrap.dedent(pop_message))
                 if pop == 0:
                     if check_move(board, turn+1, col-1, False):
-                        count+=1
                         board = apply_move(board, turn+1, col-1, False)
                         break
                 else:
                     if check_move(board, turn+1, col-1, True):
                         board = apply_move(board, turn+1, col-1, True)
-                        count-=1
                         break
         
     
