@@ -1,23 +1,7 @@
 import random
-import copy
 from time import sleep
 from os import system, name
-import textwrap
 
-def intInput(a, b, msg):
-    while True:
-        try:
-            ch = int(input(msg))
-            while ch < a or ch > b:
-                print("\nPlease enter a valid choice")
-                sleep(1)
-                ch = int(input(msg))
-            # valid choice 
-            clear()
-            return ch
-        except:
-            print("\nPlease enter a valid choice")
-            sleep(1)
 
 def clear():
     if name == "nt":
@@ -42,21 +26,21 @@ def check_move(board, turn, col, pop):
 def apply_move(board, turn, col, pop):
     # implement your function here
     rows = len(board) // 7
-    board2 = copy.deepcopy(board)
+    new = board[:]
     if pop:
         if rows == 1:
-            board2[col] = 0
+            new[col] = 0
         else:
             row = 0
-            while row < rows and board2[7*row + col]:
-                board2[7*row + col] = board2[7*(row+1) + col]
+            while row < rows and new[7*row + col]:
+                new[7*row + col] =  new[7*(row+1) + col]
                 row += 1
     else:
         row = rows - 1
-        while row >= 0 and board2[7*row + col] == 0:
+        while row >= 0 and new[7*row + col] == 0:
             row -= 1
-        board2[7*(row+1)+col] = turn 
-    return board2.copy()
+        new[7*(row+1)+col] = turn 
+    return new.copy()
 
 def check_victory(board, who_played):
     win1 = False
@@ -106,14 +90,14 @@ def computer_move(board, turn, level):
     if level == 1:
         #random inputs
         while True:
-            y = random.randint(0, cols-1)
+            j = random.randint(0, cols-1)
             pop = random.randint(0, 1)
             if pop == 0:
-                if check_move(board, turn, y, True):
-                    return (y, True)
+                if check_move(board, turn, j, True):
+                    return (j, True)
             else:
-                if check_move(board, turn, y, False):
-                    return (y, False)
+                if check_move(board, turn, j, False):
+                    return (j, False)
 
     elif level == 2:
         for i in range(cols):
@@ -128,37 +112,37 @@ def computer_move(board, turn, level):
                 return (i, False)
 
         while True:
-            y = random.randint(0, cols-1)
+            j = random.randint(0, cols-1)
             pop = random.randint(0, 1)
             if pop == 0:
-                if check_move(board, turn, y, True):
-                    board_tmp = apply_move(board, turn, y, True)
+                if check_move(board, turn, j, True):
+                    board_tmp = apply_move(board, turn, j, True)
                     if not check_victory(board_tmp, 1):
-                        return (y, True)
+                        return (j, True)
             else:
-                if check_move(board, turn, y, False):
-                    return (y, False)
+                if check_move(board, turn, j, False):
+                    return (j, False)
 
 def display_board(board):
     count = 0
-    string = ""
+    s = ""
     i = 0
-    tmpString = ""
+    temp = ""
     while i < len(board):
         if board[i] == 0:
-            tmpString += "[ ]"
+            temp += "[ ]"
         else:
-            tmpString += "[" + str(board[i]) + "]" 
+            temp += "[" + str(board[i]) + "]" 
         count += 1 
         i += 1
         if count == 7:
-            if string == "":
-                string = '\n' + tmpString
+            if s == "":
+                s = '\n' + temp
             else:
-                string = '\n' + tmpString + string
+                s = '\n' + temp + s
             count = 0
-            tmpString = ""
-    print(string)
+            temp = ""
+    print(s)
     pass
 
 def menu():
@@ -167,9 +151,9 @@ def menu():
     sleep(1)
     print("Choose a game mode!")
     message1 = "a) Play against Computer (Level 1)" + "\nb) Play against Computer (Level 2)" + "\nc) Play with another friend (2 Player)\n\n"
-    message2 = "Please choose how many rows (1-10):"
-    message3 = "Enter column to place (1-7):"
-    message4 = "Do you want to pop the disc? (1 if yes, 0 if no)"
+    message2 = "Enter no. of rows (1-10):"
+    message3 = "Which column would you like to place your piece? (1-7):"
+    message4 = "Would you like to pop your disc? \n0: No \n1:Yes\n"
     clear()
     choice = input(message1)
     while choice != 'a' and choice != 'b' and choice != 'c':
@@ -203,7 +187,7 @@ def menu():
                 if pop:
                     print("Computer popped at column", col+1)
                 else:
-                    print("Computer placed disc at column", col+1)
+                    print("Computer added a disc at column", col+1)
                 input("\nPress enter to continue")
             elif choice == 'b':
                 col, pop = computer_move(board, turn+1, 2)
@@ -213,13 +197,13 @@ def menu():
                 if pop:
                     print("Computer popped at column", col+1)
                 else:
-                    print("Computer placed disc at column", col+1)
-                input("\nPress enter to continue")
+                    print("Computer added a disc at column", col+1)
+                input("\nEnter to continue")
         else:
             if choice == 'c':
                 print("Player " + str(turn+1) + "'s turn ")
             else:
-                print("It's your turn ")
+                print("Player's turn ")
             
             while True:
                 while True:
@@ -250,11 +234,11 @@ def menu():
     display_board(board)
     if choice != 'c':
         if check_victory(board, turn+1) == 1:
-            print("Player is the winner!")
+            print("Player wins!")
         else:
-            print("Computer is the winner")
+            print("Computer wins")
     else:
-        print("Player " + str(check_victory(board, turn+1)) + " is the winner!")
+        print("Player " + str(check_victory(board, turn+1)) + " win!")
     print("\nQuitting the program...")
 
     pass
