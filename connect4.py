@@ -59,24 +59,22 @@ def check_move(board, turn, col, pop):
             return False
 
 
-# done
 def apply_move(board, turn, col, pop):
     # implement your function here
     rows = len(board) // 7
-    if check_move(board, turn, col, pop):
-        if pop:
-            if rows == 1:
-                board[col] = 0
-            else:
-                row = 0
-                while row < rows and board[7*row + col]:
-                    board[7*row + col] = board[7*(row+1) + col]
-                    row += 1
+    if pop:
+        if rows == 1:
+            board[col] = 0
         else:
-            row = rows - 1
-            while row >= 0 and board[7*row + col] == 0:
-                row -= 1
-            board[7*(row+1)+col] = turn 
+            row = 0
+            while row < rows and board[7*row + col]:
+                board[7*row + col] = board[7*(row+1) + col]
+                row += 1
+    else:
+        row = rows - 1
+        while row >= 0 and board[7*row + col] == 0:
+            row -= 1
+        board[7*(row+1)+col] = turn 
     return board.copy()
 
 # havent done
@@ -166,14 +164,25 @@ def computer_move(board, turn, level):
 # havent done 
 def display_board(board):
     # implement your function here
-    board2 = board1Dto2D(board)
-    for i in board2:
-        for j in i:
-            if j == 0:
-                print("[ ]", end="")
+    count = 0
+    string = ""
+    i = 0
+    tmpString = ""
+    while i < len(board):
+        if board[i] == 0:
+            tmpString += "[ ]"
+        else:
+            tmpString += "[" + str(board[i]) + "]" 
+        count += 1 
+        i += 1
+        if count == 7:
+            if string == "":
+                string = '\n' + tmpString
             else:
-                print("[" + str(j) + "]", end="")
-        print()
+                string = '\n' + tmpString + string
+            count = 0
+            tmpString = ""
+    print(string)
     pass
 
 def menu():
