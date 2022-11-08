@@ -1,4 +1,5 @@
 import random
+import copy
 from time import sleep
 from os import system, name
 import textwrap
@@ -62,20 +63,21 @@ def check_move(board, turn, col, pop):
 def apply_move(board, turn, col, pop):
     # implement your function here
     rows = len(board) // 7
+    board2 = copy.deepcopy(board)
     if pop:
         if rows == 1:
-            board[col] = 0
+            board2[col] = 0
         else:
             row = 0
-            while row < rows and board[7*row + col]:
-                board[7*row + col] = board[7*(row+1) + col]
+            while row < rows and board2[7*row + col]:
+                board2[7*row + col] = board2[7*(row+1) + col]
                 row += 1
     else:
         row = rows - 1
-        while row >= 0 and board[7*row + col] == 0:
+        while row >= 0 and board2[7*row + col] == 0:
             row -= 1
-        board[7*(row+1)+col] = turn 
-    return board.copy()
+        board2[7*(row+1)+col] = turn 
+    return board2.copy()
 
 # havent done
 def check_victory(board, who_played):
@@ -240,10 +242,10 @@ def menu():
                         print("Computer placed disc at column", col+1)
                     input("\nPress enter to continue")
             else:
-                icon = "(O)"
+                icon = "(1)"
                 if choice == 3:
                     if turn == 1:
-                        icon = "(X)"
+                        icon = "(2)"
                     print("Player " + str(turn+1) + "'s turn " + icon)
                 else:
                     print("It's your turn " + icon)

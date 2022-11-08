@@ -39,7 +39,9 @@ def test():
     
     board = [1,0,0,0,0,0,0,  0,0,0,0,0,0,0,  0,0,0,0,0,0,0,  0,0,0,0,0,0,0,  0,0,0,0,0,0,0,  0,0,0,0,0,0,0]
     board_result = [1,0,0,0,0,0,0,  0,0,0,0,0,0,0,  0,0,0,0,0,0,0,  0,0,0,0,0,0,0,  0,0,0,0,0,0,0,  0,0,0,0,0,0,0]
+    display_board(board)
     apply_move(board, 1, 0, False)
+    display_board(board)
     if board == board_result: print("test apply_move 1 - OK !")
     else: print("test apply_move 1 - Problem in the apply_move function output !")
     
