@@ -81,48 +81,48 @@ def apply_move(board, turn, col, pop):
 
 # havent done
 def check_victory(board, who_played):
-    board2 = board1Dto2D(board)
-    row = len(board2)
-    col = len(board2[0])
+    win1 = False
+    win2 = False
+    
+    for i in range(len(board)):
+        if i+3<len(board) and board[i] and board[i+1] and board[i+2] and board[i+3]:
+            if board[i]==board[i+1]==board[i+2]==board[i+3]==1:
+                win1=True
+            if board[i]==board[i+1]==board[i+2]==board[i+3]==2:
+                win2=True
+        
+        if i+21<len(board) and board[i] and board[i+7] and board[i+14] and board[i+21]:
+            if board[i]==board[i+7]==board[i+14]==board[i+21]==1:
+                win1=True
+            if board[i]==board[i+7]==board[i+14]==board[i+21]==2:
+                win2=True
+        
+        if i+24<len(board) and board[i] and board[i+8] and board[i+16] and board[i+24]:
+            if board[i]==board[i+8]==board[i+16]==board[i+24]==1:
+                win1 = True
+            if board[i]==board[i+8]==board[i+16]==board[i+24]==2:
+                win2 = True
+        
+        if i+18<len(board) and board[i] and board[i+6] and board[i+12] and board[i+18]:
+            if board[i]==board[i+6]==board[i+12]==board[i+18]==1:
+                win1 = True
+            if board[i]==board[i+6]==board[i+12]==board[i+18]==2:
+                win2 = True
 
-    if helper(board2,1,row,col) and who_played==2:
+    if win1 and who_played==2:
+        return 1
+
+    elif win2 and who_played==1:
+        return 2
+
+    elif win1 and who_played==1:
         return 1
     
-    elif helper(board2,2,row,col) and who_played==1:
+    elif win2 and who_played==2:
         return 2
     
-    elif helper(board2,who_played,row,col):
-        return who_played
-    
     return 0
-
-def helper(board2, who_played, row, col):
-    def checkRow(i,j):
-        if 0<=i<row and 0<=j<col and board2[i][j]==who_played:
-            return 1+checkRow(i,j+1)
-        return 0
-
-    def checkCol(i,j):
-        if 0<=i<row and 0<=j<col and board2[i][j]==who_played:
-            return 1+checkCol(i+1,j)
-        return 0
-    
-    def checkDownslope(i,j):
-        if 0<=i<row and 0<=j<col and board2[i][j]==who_played:
-            return 1+checkDownslope(i+1,j+1)
-        return 0
-    
-    def checkUpslope(i,j):
-        if 0<=i<row and 0<=j<col and board2[i][j]==who_played:
-            return 1+checkUpslope(i+1,j-1)
-        return 0
-    
-    for i in range(row):
-        for j in range(col):
-            if checkRow(i,j)>=4 or checkCol(i,j)>=4 or checkDownslope(i,j)>=4 or checkUpslope(i,j)>=4:
-                return 1
-    
-    return 0
+          
 # havent done
 def computer_move(board, turn, level):
     # implement your function here
