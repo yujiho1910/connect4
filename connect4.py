@@ -242,13 +242,10 @@ def menu():
                         print("Computer placed disc at column", col+1)
                     input("\nPress enter to continue")
             else:
-                icon = "(1)"
                 if choice == 3:
-                    if turn == 1:
-                        icon = "(2)"
-                    print("Player " + str(turn+1) + "'s turn " + icon)
+                    print("Player " + str(turn+1) + "'s turn ")
                 else:
-                    print("It's your turn " + icon)
+                    print("It's your turn ")
                 
                 while True:
                     col = intInput(1,7, textwrap.dedent(col_message))
