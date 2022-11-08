@@ -43,41 +43,43 @@ def board2Dto1D(board):
 
     return res
 
+# done
 def check_move(board, turn, col, pop):
     # implement your function here
-    board2 = board1Dto2D(board)
+    rows = len(board) // 7
     if pop:
-        if board2[-1][col] == turn:
+        if board[col] == turn:
             return True 
         else:
             return False 
     else:
-        if board2[0][col] == 0:
+        if board[7*(rows-1) + col] == 0:
             return True
         else:
             return False
 
 
+# done
 def apply_move(board, turn, col, pop):
     # implement your function here
-    board2 = board1Dto2D(board)
+    rows = len(board) // 7
     if check_move(board, turn, col, pop):
         if pop:
-            if len(board2) == 1:
-                board2[0][col] = 0
+            if rows == 1:
+                board[col] = 0
             else:
-                row = len(board2) - 1
-                while row >= 0 and board2[row][col]:
-                    board2[row][col] = board2[row-1][col]
-                    row -= 1
+                row = 0
+                while row < rows and board[7*row + col]:
+                    board[7*row + col] = board[7*(row+1) + col]
+                    row += 1
         else:
-            row = 0
-            while row < len(board2) and board2[row][col] == 0:
-                row += 1
-            board2[row-1][col] = turn 
-    board = board2Dto1D(board2)
+            row = rows - 1
+            while row >= 0 and board[7*row + col] == 0:
+                row -= 1
+            board[7*(row+1)+col] = turn 
     return board.copy()
 
+# havent done
 def check_victory(board, who_played):
     board2 = board1Dto2D(board)
     row = len(board2)
@@ -121,7 +123,7 @@ def helper(board2, who_played, row, col):
                 return 1
     
     return 0
-
+# havent done
 def computer_move(board, turn, level):
     # implement your function here
     cols = 7
@@ -161,7 +163,7 @@ def computer_move(board, turn, level):
                 if check_move(board, turn, y, False):
                     return (y, False)
 
-    
+# havent done 
 def display_board(board):
     # implement your function here
     board2 = board1Dto2D(board)
@@ -169,10 +171,8 @@ def display_board(board):
         for j in i:
             if j == 0:
                 print("[ ]", end="")
-            elif j == 1:
-                print("[O]", end="")
             else:
-                print("[X]", end="")
+                print("[" + str(j) + "]", end="")
         print()
     pass
 
@@ -275,7 +275,3 @@ def menu():
 if __name__ == "__main__":
     menu()
 
-
-
-
-    
