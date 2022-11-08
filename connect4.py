@@ -25,26 +25,6 @@ def clear():
     else:
         _ = system('clear')
 
-def board1Dto2D(board):
-    res = []
-    n = len(board)
-    r = n // 7
-    for i in range(r-1, -1, -1):
-        res.append([])
-        for j in range(7):
-            res[r-1-i].append(board[7*i + j])
-    
-    return res
-
-def board2Dto1D(board):
-    res = []
-    for i in range(len(board)-1, -1, -1):
-        for j in range(len(board[0])):
-            res.append(board[i][j])
-
-    return res
-
-# done
 def check_move(board, turn, col, pop):
     # implement your function here
     rows = len(board) // 7
@@ -58,7 +38,6 @@ def check_move(board, turn, col, pop):
             return True
         else:
             return False
-
 
 def apply_move(board, turn, col, pop):
     # implement your function here
@@ -79,7 +58,6 @@ def apply_move(board, turn, col, pop):
         board2[7*(row+1)+col] = turn 
     return board2.copy()
 
-# havent done
 def check_victory(board, who_played):
     win1 = False
     win2 = False
@@ -123,9 +101,7 @@ def check_victory(board, who_played):
     
     return 0
           
-# havent done
 def computer_move(board, turn, level):
-    # implement your function here
     cols = 7
     if level == 1:
         #random inputs
@@ -163,9 +139,7 @@ def computer_move(board, turn, level):
                 if check_move(board, turn, y, False):
                     return (y, False)
 
-# havent done 
 def display_board(board):
-    # implement your function here
     count = 0
     string = ""
     i = 0
@@ -188,7 +162,6 @@ def display_board(board):
     pass
 
 def menu():
-    # implement your function here
     clear()
     print("Welcome!")
     sleep(1)
