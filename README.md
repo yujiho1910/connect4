@@ -5,8 +5,10 @@ Simple project with Joanna Lim Ying Lin
 This version only supports 2 players i.e X and O
 
 ### How to play
-1) Download the connect4.py file
-2) Run the file to start the program
+|Steps||
+|-|-|
+|1| Download the connect4.py file|
+|2| Run the file to start the program|
 
 ### Game modes
 1) Player vs Computer (Easy)
